@@ -1,0 +1,22 @@
+{
+  "name": "potentiometer-to-browser-example",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Jeff Jassky <jeff@jeffjassky.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/JeffJassky/potentiometer-to-browser-example",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/js/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "socket.io-client": "^1.5.1"
+  }
+}

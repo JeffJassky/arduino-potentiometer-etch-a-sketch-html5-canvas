@@ -1,0 +1,95 @@
+<html>
+<head>
+	<script src="/js/vendor/socket.io-client/socket.io.js"></script>
+	<style>
+		body{
+			background: #000;
+			padding: 0;
+			margin: 0;
+		}
+		#sketch{
+			height: 1023px;
+			width: 1023px;
+			background: #fff;
+		}
+		#picker li{
+			display: inline-block;
+			height:30px;
+			width: 30px;
+			border-radius: 50%;
+			border:2px solid #444;
+		}
+		#black{
+			background: black;
+		}
+		#white {
+			background: white;
+		}
+		#pink{
+			background: pink;
+		}
+		#purple{
+			background: purple;
+		}
+		#orange{
+			background: orange;
+		}
+		#green{
+			background: green;
+		}
+	</style>
+</head>
+<body>
+	<ul id="picker">
+		<li id="black"></li>
+		<li id="white"></li>
+		<li id="pink"></li>
+		<li id="green"></li>
+		<li id="purple"></li>
+		<li id="orange"></li>
+	</ul>
+	<input type="range" max="200" min="1" id="brushWidth">
+	<div id="sketch">
+		<canvas id="paint"></canvas>
+	</div>
+	<script>
+		var canvas = document.querySelector('#paint');
+		var ctx = canvas.getContext('2d');
+		var sketch = document.querySelector('#sketch');
+		var sketch_style = getComputedStyle(sketch);
+	    var lastPosition = {x: 0, y: 0};
+	  
+		/* Drawing on Paint App */
+		ctx.lineWidth = 5;
+		ctx.lineJoin = 'round';
+		ctx.lineCap = 'round';
+		ctx.strokeStyle = 'blue';
+
+		canvas.width = parseInt(sketch_style.getPropertyValue('width'));
+		canvas.height = parseInt(sketch_style.getPropertyValue('height'));
+
+		function onStuff(newPosition) {
+			ctx.beginPath();
+			ctx.moveTo(lastPosition.x, lastPosition.y);
+			ctx.lineTo(newPosition.x, newPosition.y);
+
+			ctx.lineJoin = 'round';
+			ctx.lineCap = 'round';
+			
+			// ctx.closePath();
+			ctx.stroke();
+	    	lastPosition = newPosition;
+		}
+
+		var socket = io.connect(window.document.location.origin);
+		socket.on('stuff', onStuff);
+
+		document.getElementById('picker').onclick = function(e){
+			ctx.strokeStyle = e.target.id;
+		}
+		document.getElementById('brushWidth').oninput = function(e){
+			ctx.lineWidth = e.target.value;
+		}
+	</script>
+</body>
+</html>
